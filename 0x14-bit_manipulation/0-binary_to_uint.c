@@ -1,29 +1,47 @@
 #include "main.h"
 
-/**
- * binary_to_uint - converts a binary number to an unsigned int.
- * @b: pointer to a string containing a binary number
- *
- * Return: unsigned int with decimal value of binsry number, or 0 if error
- */
-unsigned int binary_to_uint(const char *b)
-{
-	int i;
-	unsigned int num;
+unsigned int _pow(int base, int exp);
 
-	num = 0;
-	if (!b)
+/**
+ * binary_to_uint - returns the decimal equivalent of a binary number
+ * @str: binary number to be converted
+ *
+ * Return: decimal number (Success) or 0 (error)
+ */
+unsigned int binary_to_uint(const char *str)
+{
+	unsigned int exp, result = 0;
+	int i, count = 0;
+
+	if (str == NULL)
 		return (0);
-	for (i = 0; b[i] != '\0'; i++)
+
+	while (str[count] != '\0')
 	{
-		if (b[i] != '0' && b[i] != '1')
+		if (str[count] == '1' || str[count] == '0')
+			count++;
+		else
 			return (0);
 	}
-	for (i = 0; b[i] != '\0'; i++)
-	{
-		num <<= 1;
-		if (b[i] == '1')
-			num += 1;
-	}
-	return (num);
+
+	for (exp = 0, i = count - 1; i >= 0; exp++, i--)
+		result += (str[i] - '0') * _pow(2, exp);
+
+	return (result);
+}
+
+
+/**
+ * _pow - returns the power of a base to a specific exponent
+ * @base: base number
+ * @exp: exponent value
+ *
+ * Return: @base ^ @exp
+ */
+unsigned int _pow(int base, int exp)
+{
+	if (exp <= 0)
+		return (1);
+	else
+		return (base * _pow(base, exp - 1));
 }
